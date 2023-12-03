@@ -6,139 +6,91 @@ import java.util.Random;
 
 public class Game {
 
-	public void play() {
-		int player = 0;
-		String[][] board = {{"⬜", "⬜", "⬜", "⬜", "⬜", "⬜", "⬜", "⬜"},
-				{"⬜", "⬜", "⬜", "⬛", "⬛", "⬛", "⬜", "⬜"},
-				{"⬜", "⬜", "⬜", "⬜", "⬜", "⬜", "⬛", "⬜"},
-				{"⬜", "⬜", "⬜", "⬜", "⬜", "⬜", "⬛", "⬜"},
-				{"⬜", "⬜", "⬜", "⬜", "⬜", "⬛", "⬜", "⬜"},
-				{"⬜", "⬜", "⬜", "⬜", "⬜", "⬜", "⬛", "⬜"},
-				{"⬜", "⬜", "⬜", "⬜", "⬜", "⬜", "⬛", "⬜"},
-				{"⬜", "⬜", "⬜", "⬛", "⬛", "⬛", "⬜", "⬜"}};
+	private static final String EMPTY_CELL = "⬜";
+    private static final String CAR = "🚙";
+    private static final String PLAYER_CAR = "🚗";
+    private static final String OBSTACLE_CAR = "⬛";
 
-		for(String[] row : board) {
-			for(String elem : row)
-				System.out.print(" " + elem + " ");
-			System.out.println("");
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+    private int player = 0;
+    private String[][] board = {
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, OBSTACLE_CAR, OBSTACLE_CAR, EMPTY_CELL, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, EMPTY_CELL, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, EMPTY_CELL},
+        {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, OBSTACLE_CAR, OBSTACLE_CAR, OBSTACLE_CAR, EMPTY_CELL, EMPTY_CELL}
+    };
 
-		for(int i=0; i<board[0].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[1].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[2].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[3].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[4].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[5].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[6].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[7].length; i++) board[0][i] = "⬜";
-		board[1][3] = "⬛"; board[1][4] = "⬛"; board[1][5] = "⬛";
-		board[2][2] = "⬛"; board[2][5] = "⬛"; 
-		board[3][6] = "⬛"; 
-		board[4][5] = "⬛"; 
-		board[5][4] = "⬛"; 
-		board[6][3] = "⬛"; 
-		board[7][2] = "⬛"; board[7][3] = "⬛"; board[7][4] = "⬛"; board[7][5] = "⬛"; board[7][6] = "⬛";
+    public void play() {
+        boolean playing = true;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            while (playing) {
+                displayBoard();
+                moveCarsDown();
 
-		for(String[] row : board) {
-			for(String r : row)
-				System.out.print(" " + r + " ");
-			System.out.println("");
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+                // Generate a new car at a random position in the top row
+                int newCar = new Random().nextInt(8);
+                board[0][newCar] = CAR;
+                board[7][player] = PLAYER_CAR;
 
-		for(int i=0; i<board[0].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[1].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[2].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[3].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[4].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[5].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[6].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[7].length; i++) board[0][i] = "⬜";
-		board[1][4] = "⬛"; 
-		board[2][3] = "⬛"; board[2][3] = "⬛"; 
-		board[3][4] = "⬛"; 
-		board[4][4] = "⬛"; 
-		board[5][4] = "⬛"; 
-		board[6][4] = "⬛"; 
-		board[7][2] = "⬛"; board[7][3] = "⬛"; board[7][4] = "⬛"; board[7][5] = "⬛"; 
+                // Input
+                String key = br.readLine();
 
-		for(String[] row : board) {
-			for(String r : row)
-				System.out.print(" " + r + " ");
-			System.out.println("");
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+                if (key.equals("q")) {
+                    playing = false;
+                } else if (key.equals("a") && player > 0) {
+                    movePlayerLeft();
+                } else if (key.equals("d") && player < 7) {
+                    movePlayerRight();
+                }
 
-		for(int i=0; i<board[0].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[1].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[2].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[3].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[4].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[5].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[6].length; i++) board[0][i] = "⬜";
-		for(int i=0; i<board[7].length; i++) board[0][i] = "⬜";
+                if (board[7][player].equals(CAR) || board[6][player].equals(CAR)) {
+                    playing = false;
+                    System.out.println("Perdiste!");
 
-		boolean playing = true;
-		while(playing) {
-			try {
-				Random r = new Random();
-				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				int newCar = r.nextInt(8);
-				board[0][newCar] = "🚙";
-				board[7][player] = "🚗";
-				
-				for(String[] row : board) {
-					for(String a : row)
-						System.out.print(" " + a + " ");
-					System.out.println("");
-				}
+                    // Reset the player position and clear the top row
+                    player = 0;
+                    for (int i = 0; i < board[0].length; i++) {
+                        board[0][i] = EMPTY_CELL;
+                    }
+                }
 
-				//input
-				String key = br.readLine();
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-				if(key.equals("q")) {
-					playing = false;
-					break;
-				} else if(key.equals("a") && player > 0) {
-					board[7][player] = "⬜";
-					player -= 1;
-				} else if(key.equals("d") && player < 7) {
-					board[7][player] = "⬜";
-					player += 1;
-				}
-				if(board[7][player].equals("🚙") || board[6][player].equals("🚙")) {
-					playing = false;
-					System.out.println("Perdiste!");
+    private void displayBoard() {
+        for (String[] row : board) {
+            for (String elem : row) {
+                System.out.print(" " + elem + " ");
+            }
+            System.out.println("");
+        }
+    }
 
-					//move cars down
-					for(int i=0; i<7; i++) 
-						board[7-i] = board[6-i];
+    private void moveCarsDown() {
+        for (int i = 0; i < 7; i++) {
+            board[7 - i] = board[6 - i].clone();
+        }
+    }
 
-					for(int i=0; i<board[0].length; i++) board[0][i] = "⬜";
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+    private void movePlayerLeft() {
+        board[7][player] = EMPTY_CELL;
+        player -= 1;
+    }
 
+    private void movePlayerRight() {
+        board[7][player] = EMPTY_CELL;
+        player += 1;
+    }
 
-	public static void main(String[] args) {
-		Game game = new Game();
-		game.play();
-	}
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.play();
+    }
 }
